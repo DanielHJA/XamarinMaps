@@ -29,5 +29,9 @@ namespace Maps
             viewModel.ChangeMapType();
         }
 
+        void TheCarousel_CurrentItemChanged(CarouselView sender, Xamarin.Forms.CurrentItemChangedEventArgs e)
+        {
+            viewModel.CarouselItemDidChange(sender.Position);
+        }
     }
 }

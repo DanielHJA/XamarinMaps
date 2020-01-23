@@ -8,24 +8,38 @@
              x:Class="Maps.MainPage">
     <StackLayout>
 
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="10*"/>
+            </Grid.RowDefinitions>
 
-        <maps:Map
+
+            <maps:Map
+            Grid.Column="0"
+            Grid.Row="0"
             ItemsSource="{ Binding Locations }"
             x:Name="map"
             MapType="{ Binding CurrentMapType }"
             IsShowingUser="True">
-            <maps:Map.ItemTemplate>
-                <DataTemplate>
-                    <maps:Pin
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin
                         Position="{ Binding Position }"
                         Address="{ Binding Address }"
                         Label="{ Binding Description }"/>
-                </DataTemplate>
-            </maps:Map.ItemTemplate>
-        </maps:Map>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
 
 
-        <Button
+            <Button
+                Grid.Column="0"
+                Grid.Row="0"
                 Text="Change mode"
                 BackgroundColor="Blue"
                 TextColor="White"
@@ -38,5 +52,45 @@
                 Clicked="MapModeButtonClicked"
                 />
 
+            <CarouselView
+              x:Name="TheCarousel"
+              Grid.Column="0"
+              Grid.Row="1"
+              ItemsSource="{ Binding CarouselItems }"
+              CurrentItemChanged="TheCarousel_CurrentItemChanged"
+              HorizontalScrollBarVisibility="Never">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+                            <Label Text="{Binding Title}"
+                                   HorizontalTextAlignment="Center"
+                                   FontSize="Title" />
+
+                            <Image Source="{ Binding Image }"
+                                   Aspect="AspectFit"
+                                   HorizontalOptions="Center"
+                                   HeightRequest="270"
+                                   WidthRequest="270"
+                                   />
+
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"
+                           SnapPointsType="MandatorySingle"
+                           SnapPointsAlignment="Start" />
+                </CarouselView.ItemsLayout>
+            </CarouselView>
+
+            <IndicatorView ItemsSourceBy="TheCarousel"
+                           Grid.Column="0"
+                           Grid.Row="2"
+                           HorizontalOptions="CenterAndExpand"
+                           IndicatorColor="LightGray"
+                           SelectedIndicatorColor="Blue" />
+
+        </Grid>
     </StackLayout>
 </ContentPage>

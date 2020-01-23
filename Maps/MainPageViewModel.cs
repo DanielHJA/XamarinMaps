@@ -15,6 +15,23 @@ namespace Maps
         Map map;
         Plugin.Geolocator.Abstractions.Position userPosition = new Plugin.Geolocator.Abstractions.Position();
 
+        private ObservableCollection<CarouselItem> _CarouselItems = new ObservableCollection<CarouselItem>();
+        public ObservableCollection<CarouselItem> CarouselItems
+        {
+            get
+            {
+                return _CarouselItems;
+            }
+            set
+            {
+                if (value != _CarouselItems)
+                {
+                    _CarouselItems = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private ObservableCollection<Location> _Locations = new ObservableCollection<Location>();
         public ObservableCollection<Location> Locations
         {
@@ -61,6 +78,17 @@ namespace Maps
             ConfigureLocations();
             addPolygon();
             addPolyLine();
+            ConfigureCarouselItems();
+        }
+
+        private void ConfigureCarouselItems() {
+            ObservableCollection<CarouselItem> Items = new ObservableCollection<CarouselItem>(new CarouselItem[] {
+                new CarouselItem("Monkey", "https://ichef.bbci.co.uk/news/410/cpsprodpb/E9DF/production/_96317895_gettyimages-164067218.jpg"),
+                new CarouselItem("Fox", "https://www.thatsfarming.com/uploads/news/resizeExact_1200_800/11685-fox-3053706-1280.jpg"),
+                new CarouselItem("Koala", "https://upload.wikimedia.org/wikipedia/commons/4/49/Koala_climbing_tree.jpg"),
+                new CarouselItem("Seal", "https://s.abcnews.com/images/International/grey-seal-stock-gty-jef-190621_hpMain_16x9_992.jpg")
+             });
+            CarouselItems = Items;
         }
 
         private void addPolygon() {
@@ -96,33 +124,33 @@ namespace Maps
                     new Xamarin.Forms.Maps.Position(58.752446,17.006564),
                     new Xamarin.Forms.Maps.Position(58.752131,17.005252),
                     new Xamarin.Forms.Maps.Position(58.759823,16.998335)
-        }
-    };
+            }
+        };
 
 
-            map.MapElements.Add(polyline);
-}
+                map.MapElements.Add(polyline);
+    }
 
-private void ConfigureLocations() {
-            Location Location1 = new Location();
-            Location1.Position = new Xamarin.Forms.Maps.Position(58.753158, 17.002392);
-            Location1.Address = "Locationsvägen 10, 51122, Nyköping";
-            Location1.Description = "Location 1";
+        private void ConfigureLocations() {
+                    Location Location1 = new Location();
+                    Location1.Position = new Xamarin.Forms.Maps.Position(58.753158, 17.002392);
+                    Location1.Address = "Locationsvägen 10, 51122, Nyköping";
+                    Location1.Description = "Location 1";
 
-            Location Location2 = new Location();
-            Location2.Position = new Xamarin.Forms.Maps.Position(58.74631443881254, 17.012184120110856);
-            Location2.Address = "Locationsvägen 20, 51122, Nyköping";
-            Location2.Description = "Location 2";
+                    Location Location2 = new Location();
+                    Location2.Position = new Xamarin.Forms.Maps.Position(58.74631443881254, 17.012184120110856);
+                    Location2.Address = "Locationsvägen 20, 51122, Nyköping";
+                    Location2.Description = "Location 2";
 
-            Location Location3 = new Location();
-            Location3.Position = new Xamarin.Forms.Maps.Position(58.74339490122441, 16.99936701669513);
-            Location3.Address = "Locationsvägen 30, 51122, Nyköping";
-            Location3.Description = "Location 3";
+                    Location Location3 = new Location();
+                    Location3.Position = new Xamarin.Forms.Maps.Position(58.74339490122441, 16.99936701669513);
+                    Location3.Address = "Locationsvägen 30, 51122, Nyköping";
+                    Location3.Description = "Location 3";
 
-            Locations.Add(Location1);
-            Locations.Add(Location2);
-            Locations.Add(Location3);
-        }
+                    Locations.Add(Location1);
+                    Locations.Add(Location2);
+                    Locations.Add(Location3);
+          }
 
         private async Task StartListening()
         {
@@ -179,6 +207,11 @@ private void ConfigureLocations() {
             }
 
             CurrentMapType = mapTypes[currentMapTypeIndex];
+        }
+
+        public void CarouselItemDidChange(int Position)
+        {
+    
         }
     }
 }
