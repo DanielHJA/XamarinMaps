@@ -7,66 +7,19 @@ using Plugin.Geolocator.Abstractions;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Maps
 {
-    public class MainPageViewModel: BindableObject
+    public class MainPageViewModel: BindableObject, INotifyPropertyChanged
     {
+
         Map map;
         Plugin.Geolocator.Abstractions.Position userPosition = new Plugin.Geolocator.Abstractions.Position();
-
-        private ObservableCollection<CarouselItem> _CarouselItems = new ObservableCollection<CarouselItem>();
-        public ObservableCollection<CarouselItem> CarouselItems
-        {
-            get
-            {
-                return _CarouselItems;
-            }
-            set
-            {
-                if (value != _CarouselItems)
-                {
-                    _CarouselItems = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private ObservableCollection<Location> _Locations = new ObservableCollection<Location>();
-        public ObservableCollection<Location> Locations
-        {
-            get
-            {
-                return _Locations;
-            }
-            set
-            {
-                if (value != _Locations)
-                {
-                    _Locations = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
+        public ObservableCollection<CarouselItem> CarouselItems { get; private set; }
+        public MapType CurrentMapType { get; private set; }
+        public ObservableCollection<Location> Locations { get; private set; }
         private int currentMapTypeIndex;
-        private MapType _CurrentMapType { get; set; }
-        public MapType CurrentMapType
-        {
-            get
-            {
-                return _CurrentMapType;
-            }
-            set
-            {
-                if (value != _CurrentMapType)
-                {
-                    _CurrentMapType = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         readonly private List<MapType> mapTypes = new List<MapType>(new MapType[] { MapType.Hybrid, MapType.Satellite, MapType.Street });
 
         public MainPageViewModel(Map map)
@@ -89,6 +42,7 @@ namespace Maps
                 new CarouselItem("Seal", "https://s.abcnews.com/images/International/grey-seal-stock-gty-jef-190621_hpMain_16x9_992.jpg")
              });
             CarouselItems = Items;
+            OnPropertyChanged("CarouselItems");
         }
 
         private void addPolygon() {
@@ -147,9 +101,9 @@ namespace Maps
                     Location3.Address = "Locationsvägen 30, 51122, Nyköping";
                     Location3.Description = "Location 3";
 
-                    Locations.Add(Location1);
-                    Locations.Add(Location2);
-                    Locations.Add(Location3);
+                    Locations = new ObservableCollection<Location>() { Location1, Location2, Location3 };
+
+                    OnPropertyChanged("Locations");
           }
 
         private async Task StartListening()
@@ -207,6 +161,7 @@ namespace Maps
             }
 
             CurrentMapType = mapTypes[currentMapTypeIndex];
+            OnPropertyChanged("CurrentMapType");
         }
 
         public void CarouselItemDidChange(int Position)
