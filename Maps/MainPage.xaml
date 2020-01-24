@@ -6,6 +6,12 @@
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              mc:Ignorable="d"
              x:Class="Maps.MainPage">
+    <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Push"
+                 Order="Primary"
+                 Clicked="ToolbarItem_Clicked"
+                 Priority="0" />
+</ContentPage.ToolbarItems>
     <StackLayout>
 
         <Grid>
